@@ -20,19 +20,20 @@ while true; do
             echo
             echo "ipl    - Search information about IPV4 Public address"
             echo "web    - Type web domain to get IP address"
-            echo "credit - Get information about tool"
             echo "clear  - Clearing console"
             echo "myip   - Get your IPV4 public address"
-            echo "tping  - Try ping public ipv4 adress (its dont work for every ip adress)"
+            echo "tping  - Try ping public ipv4 adress (does not work on every IP address"
             echo "nmcli  - get informations about your wifi card"
-            echo "stop   - Exit"
             echo "port   - scan ip for open ports"
             echo "mport  - check your internet open ports "
             echo "proxyc - you can check proxy adress. you will get website source if proxy working"
             echo "ahost  - scan for active hosts on ip"
+            echo 
+            echo "doxh   - Doxxing template builder"
             echo
-            echo "req    - list of required modules on your linux" 
-            echo "readme - Read credits"
+            echo "req-ins- Download all reqiremeants" 
+            echo "credit - Read credits"
+            echo "stop   - Exit"
             echo
             ;;
         ipl)
@@ -67,10 +68,6 @@ while true; do
         clear)
             clear_screen
             ;;
-        readme)
-            clear
-            cat credits.txt
-            ;;
         tping)
             echo "If you want stop pinging IP just clikc ctrl + C"
             read -p "$USER <~> Public IPV4/ " ip
@@ -83,10 +80,37 @@ while true; do
         echo "1000101 osint has been disabled"
         exit 
         ;;
-        req)
-        echo Required modules list:
-        echo "- NetworkManager"
-        echo "- nmap"
+        req-ins)
+        echo "ubuntu | kali | arch | fedora |"
+        echo "choose your OS to install packages (if you use termux or WSL choose ubuntu)"
+        read -p "$USER <~> OS/ " os
+
+        case $os in
+    ubuntu)
+        sudo apt-get install nmap
+        sudo apt-get install networkmanager
+        echo "Succesful downloaded osint requiremeants"
+        ;;
+    kali)
+        sudo apt-get install nmap
+        sudo apt-get install networkmanager
+        echo "Succesful downloaded osint requiremeants"
+
+        ;;
+    arch)
+        pacman -S nmap
+        pacman -S networkmanager
+        echo "Succesful downloaded osint requiremeants"
+        ;;
+    fedora)
+        sudo dnf install nmap
+        sudo dnf install networkmanager
+        echo "Succesful downloaded osint requiremeants"
+        ;;
+    *)
+        echo "invalid OS"
+        ;;
+esac
         ;;
         port)
         read -p "$USER <~> Public IP/ " ip
@@ -104,6 +128,53 @@ while true; do
         ahost)
         read -p "$USER <~> IP/ " ip
         nmap -sn $ip/24
+        ;;
+        doxh)
+        read -p "$USER <~> Name/ " name
+        read -p "$USER <~> Last name/" lastname
+        read -p "$USER <~> Discord name/ " dcname
+        read -p "$USER <~> Discord ID/ " dcid
+        read -p "$USER <~> Country/ " country
+        read -p "$USER <~> City/ " city
+        read -p "$USER <~> Dox reason/ " reason
+        read -p "$USER <~> victim instagram url/ " instagram
+        read -p "$USER <~> victim facebook profile url/ " fb
+        read -p "$USER <~> victim tiktok url/ " tiktok
+        read -p "$USER <~> victim youtube url/ " youtube
+        read -p "$USER <~> victim snapchat name/ " snapchat
+        read -p "$USER <~> ip adress/ " ip
+        read -p "$USER <~> timezone/ " timezone
+        read -p "$USER <~> phone number/ " phone
+        read -p "$USER <~> Age/ " age
+        camel=$(<camel.abrissy)
+        del "dox.txt"
+        echo "
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                                Join 100101 Cult                                  │
+│                         https://discord.gg/g3p325R9Yn                            │
+└──────────────────────────────────────────────────────────────────────────────────┘
+        $camel
+        Reason: $reason
+        ---> Personal Informations:
+        Name: $name
+        Last name: $lastname
+        Full name: $name $lastname
+        Age: $age
+        City: $city
+        Country: $country
+        Timezone: $timezone
+        Phone number: $phone
+
+        ---> Social media:
+        Discord name: $dcname
+        Discord ID: $dcid
+        Snapchat: $snapchat
+        Instagram: $instagram
+        Youtube: $youtube
+        Tiktok: $tiktok
+        Facebook: $fb
+        ">> dox.txt
+
         ;;
         *)
             echo "Invalid option. Type 'help' for available options."
