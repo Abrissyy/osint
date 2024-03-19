@@ -28,19 +28,53 @@ while true; do
             echo "mport  - check your internet open ports "
             echo "proxyc - you can check proxy adress. you will get website source if proxy working"
             echo "ahost  - scan for active hosts on ip"
+            echo "phttp  - free HTTP proxy list"
+            echo "psocks5- free SOCKS5 proxy list"
+            echo "psocks4- free SOCKS4 proxy list"
+            echo "us     - user searcher"
             echo 
             echo "doxh   - Doxxing template builder"
+            echo "webhm  - send message to webhook"
+            echo "webhd  - delete webhook"
             echo
             echo "req-ins- Download all reqiremeants" 
             echo "credit - Read credits"
             echo "stop   - Exit"
             echo
             ;;
+        us)
+            read -p "$USER <~> Username-to-search/ " username
+            echo
+            echo [INSTAGRAM] https://www.instagram.com/$username 
+            echo [YOUTUBE]   https://youtube.com/@$username 
+            echo [DOXBIN]    https://doxbin.org/user/$username 
+            echo [TIKTOK]    https://www.tiktok.com/@$username 
+            echo [TWITTER]   https://twitter.com/$username
+            echo [PINTEREST] https://pinterest.com/$username
+        ;;
+        phttp)
+        curl https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&protocol=http&timeout=15000&proxy_format=ipport&format=text 
+        ;;
+        psocks5)
+        curl https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&protocol=socks5&timeout=15000&proxy_format=ipport&format=text 
+        ;;
+        psocks4)
+        curl https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&protocol=socks4&timeout=15000&proxy_format=ipport&format=text 
+        ;;
         ipl)
             read -p "$USER <~> Public IPV4/ " ip
             curl ipinfo.io/"$ip"?token=7ac6b2bcbf4dae
             echo
             ;;
+        webhm)
+            read -p "$USER <~> Webhook/ " webhook
+            read -p "$USER <~> Message/ " message 
+            curl -H "Content-Type: application/json" -d "{\"content\":\"$message\"}" $webhook
+        ;;
+        webhd)
+            read -p "$USER <~> Webhook/ " webhook
+            curl -X DELETE $webhook 
+        ;;
         credit)
             echo
             echo "Tool coded by Abrissy (t.me/Abrissy)"
@@ -88,7 +122,7 @@ while true; do
         case $os in
     ubuntu)
         sudo apt-get install nmap
-        sudo apt-get install networkmanager
+        sudo apt-get install networkmanagerz
         echo "Succesful downloaded osint requiremeants"
         ;;
     kali)
